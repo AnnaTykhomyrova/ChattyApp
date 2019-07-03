@@ -20,6 +20,13 @@ componentDidMount() {
   this.socket.onopen = function (event) {
     console.log('Connected to server');
   };
+
+  this.socket.onmessage = (event) => {
+    console.log("The event onmessage data is: ", event.data);
+    // code to handle incoming message
+    this.setState({ messages: this.state.messages.concat(JSON.parse(event.data).message)});
+    console.log("Current state is", this.state.messages);
+  }
 }
 
 // Send msg object as a JSON-formatted string.
@@ -30,14 +37,6 @@ sendMessageToServer = (msg) => {
 
 addMessage = (event) => {
     if(event.key === 'Enter'){
-      console.log('enter pressed here! ')
-      let newMessage = {
-          id: this.state.messages.length + 1,
-          username: this.state.currentUser.name,
-          content: event.target.value
-      }
-      const messages = this.state.messages.concat(newMessage)
-      this.setState({messages: messages})
 
       let msg = {
         type: 'sendMessage',
