@@ -10,18 +10,7 @@ class App extends Component {
     this.socket = new WebSocket('ws://localhost:3001');
     this.state = {
       currentUser: {name: "Bob"},
-      messages: [],
-      //   {
-      //     id: 1,
-      //     username: "Bob",
-      //     content: "Has anyone seen my marbles?",
-      //   },
-      //   {
-      //     id: 2,
-      //     username: "Anonymous",
-      //     content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-      //   }
-      // ]
+      messages: [], // messages coming from the server will be stored here as they arrive
     }
   }
 
@@ -55,7 +44,7 @@ addMessage = (event) => {
         username: this.state.currentUser.name,
         content: event.target.value
       };
-      this.sendMessageToServer(msg);
+      this.sendMessageToServer({message: msg});
       console.log("msg is: ", msg);
       // console.log(`User ${msg.username} said ${msg.content}`);
       event.target.value = "";
