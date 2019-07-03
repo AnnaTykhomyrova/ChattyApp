@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 
 class ChatBar extends Component {
+  propTypes = {
+    currentUser: React.PropTypes.string.isRequired,
+    addName: React.PropTypes.string.isRequired,
+    addMessage: React.PropTypes.string.isRequired
+  };
   render() {
     return (
       <footer className="chatbar">
