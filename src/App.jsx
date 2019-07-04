@@ -9,8 +9,8 @@ class App extends Component {
     // store the socket connection object
     this.socket = new WebSocket('ws://localhost:3001');
     this.state = {
-      currentUser: {name: "Bob"},
-      messages: [], // messages coming from the server will be stored here as they arrive
+      currentUser: {name: "Anonymous"},
+      messages: [] // messages coming from the server will be stored here as they arrive
     }
   }
 
@@ -23,14 +23,32 @@ componentDidMount() {
   this.socket.onmessage = (event) => {
     console.log("The event onmessage data is: ", event.data);
     // code to handle incoming message
-    this.setState({ messages: this.state.messages.concat(JSON.parse(event.data).message)});
+    // The socket event data is encoded as a JSON string.
+    // This line turns it into an object
+    const data = JSON.parse(event.data);
+    this.setState({ messages: this.state.messages.concat(data.message)});
     console.log("Current state is", this.state.messages);
   }
 }
 
 addName = (event) => {
-  let newName = event.target.value
-  this.setState({currentUser: {name:newName}})
+  const oldusername = this.state.currentUser.name;
+    // console.log('old state is: ',this.state);
+
+  if (event.key === 'Enter') {
+    this.setState({currentUser: {name: event.target.value}});
+    // console.log('new state is: ',this.state);
+    // console.log('event target value is: ',event.target.value);
+
+    let msg = {
+      type: "postNotification",
+      oldusername: oldusername,
+      newusername: event.target.value
+    };
+    console.log('msg is: ',msg);
+    this.sendMessageToServer({ message: msg });
+    event.target.value = '';
+  }
 }
 
 // Send msg object as a JSON-formatted string.
@@ -42,14 +60,14 @@ sendMessageToServer = (msg) => {
 addMessage = (event) => {
     if(event.key === 'Enter'){
 
-      let msg = {
-        type: 'sendMessage',
+      const msg = {
+        type: 'postMessage',
         username: this.state.currentUser.name,
         content: event.target.value
       };
       this.sendMessageToServer({message: msg});
       console.log("msg is: ", msg);
-      event.target.value = "";
+      event.target.value = '';
     }
 }
 
@@ -61,7 +79,9 @@ addMessage = (event) => {
         </nav>
         <MessageList  messages={this.state.messages} />
         <ChatBar  currentUser={this.state.currentUser}
-        addMessage={this.addMessage} addName={this.addName} />
+          addMessage={this.addMessage} 
+          addName={this.addName} 
+        />
       </div>
     );
   }

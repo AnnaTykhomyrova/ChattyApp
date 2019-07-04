@@ -30,12 +30,18 @@ wss.on('connection', (ws) => {
     });
   };
 
-  ws.on('message', function incoming(incomingMessage) {
-    console.log('incoming message is:', incomingMessage);
-    const parsedMessage = JSON.parse(incomingMessage);
-    console.log('parsedMessage is', parsedMessage);
+  ws.on('message', (incomingData) => {
+    //console.log('incoming message is:', incomingMessage);
+    const parsedMessage = JSON.parse(incomingData);
+    //console.log('parsedMessage is', parsedMessage);
     parsedMessage.message.id = uuidV1();
-    console.log('parsedMessage is', parsedMessage.message);
+    //console.log('parsedMessage is', parsedMessage.message);
+    switch (parsedMessage.message.type) {
+      case 'postMessage': parsedMessage.message.type = 'incomingMessage';
+        break;
+      case 'postNotification': parsedMessage.message.type = 'incomingNotification';
+        break;
+    }
     wss.broadcast(parsedMessage);
     console.log(`User ${parsedMessage.message.username} said ${parsedMessage.message.content}`);
   });

@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
 
 class Message extends Component {
-  propTypes = {
-    currentUsername: React.PropTypes.string.isRequired,
-    currentMessage: React.PropTypes.string.isRequired
-  };
   render() {
     return (
       <div className="message">
