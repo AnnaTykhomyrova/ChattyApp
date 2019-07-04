@@ -49,10 +49,15 @@ body {
 }
 
 .message-content,
-.message-username {
+.message-username,
+.notification-content {
   overflow: hidden;
   margin: 5px;
   padding: 0 10px;
+}
+
+.notification-content {
+  margin: 10px;
 }
 
 .message-content {
@@ -85,4 +90,10 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.navbar-usersCount {
+  display: block;
+  float: right;
+  margin-top: 25px;
 }

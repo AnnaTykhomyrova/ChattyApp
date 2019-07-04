@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 // server.js
 
 const express = require('express');
@@ -23,6 +22,12 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
   
+  // update the connected number of users (usersCount)
+  // send wss.clients.size to get the number of users connected
+  wss.clients.forEach(function each(client) {
+    client.send(wss.clients.size);
+  });
+
   wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
       client.send(JSON.stringify(data));
@@ -42,10 +47,21 @@ wss.on('connection', (ws) => {
       case 'postNotification': parsedMessage.message.type = 'incomingNotification';
         break;
     }
-    wss.broadcast(parsedMessage);
+    
     console.log(`User ${parsedMessage.message.username} said ${parsedMessage.message.content}`);
+    //let stringifiedMessage = JSON.stringify(parsedMessage);
+    wss.broadcast(parsedMessage);
   });
-  
-  // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+
+   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
+   ws.on('close', () => {
+    console.log('Client disconnected');
+  // update the connected number of users (usersCount)
+  // send wss.clients.size to get the number of users connected
+    wss.clients.forEach(function each(client) {
+      client.send(wss.clients.size);
+    });
+  });
 });
+  
+  

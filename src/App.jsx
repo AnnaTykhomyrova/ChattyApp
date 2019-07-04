@@ -10,7 +10,8 @@ class App extends Component {
     this.socket = new WebSocket('ws://localhost:3001');
     this.state = {
       currentUser: {name: "Anonymous"},
-      messages: [] // messages coming from the server will be stored here as they arrive
+      messages: [], // messages coming from the server will be stored here as they arrive
+      usersCount: 0,
     }
   }
 
@@ -25,9 +26,13 @@ componentDidMount() {
     // code to handle incoming message
     // The socket event data is encoded as a JSON string.
     // This line turns it into an object
-    const data = JSON.parse(event.data);
+    if (event.data == parseInt(event.data)) {
+      this.setState({ usersCount: event.data });
+    } else {
+      const data = JSON.parse(event.data);
     this.setState({ messages: this.state.messages.concat(data.message)});
     console.log("Current state is", this.state.messages);
+    }
   }
 }
 
@@ -69,13 +74,15 @@ addMessage = (event) => {
       console.log("msg is: ", msg);
       event.target.value = '';
     }
-}
+  }
+
 
   render() {
     return (
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <span className="navbar-usersCount">{this.state.usersCount} users online</span>
         </nav>
         <MessageList  messages={this.state.messages} />
         <ChatBar  currentUser={this.state.currentUser}
