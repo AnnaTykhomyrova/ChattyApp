@@ -16,6 +16,7 @@ class MessageList extends Component {
               userID={ data.id }
               currentUsername={ data.username }
               currentMessage={ data.content }
+              color={ data.userColor} 
             />)
             } else {
             return (<Notification

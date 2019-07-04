@@ -16,11 +16,22 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
+function colorRandomizer() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  console.log(colorRandomizer());
+  ws.send(JSON.stringify({color: colorRandomizer(), type: "color"}));
   
   // update the connected number of users (usersCount)
   // send wss.clients.size to get the number of users connected

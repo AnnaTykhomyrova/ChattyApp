@@ -12,6 +12,7 @@ class App extends Component {
       currentUser: {name: "Anonymous"},
       messages: [], // messages coming from the server will be stored here as they arrive
       usersCount: 0,
+      userColor: '', /////////////////////////////////////////////////////////////////////////////////////////
     }
   }
 
@@ -26,10 +27,18 @@ componentDidMount() {
     // code to handle incoming message
     // The socket event data is encoded as a JSON string.
     // This line turns it into an object
+    console.log(event);
+    console.log(parseInt(event.data));
+    let data = JSON.parse(event.data);
     if (event.data == parseInt(event.data)) {
-      this.setState({ usersCount: event.data });
-    } else {
-      const data = JSON.parse(event.data);
+      this.setState({ 
+        usersCount: event.data
+       });
+    } else if (data.type == "color") {
+      this.setState({ 
+        userColor: data.color //////////////////////////////////////////////////////////////////////////////////
+       });
+    } else { 
     this.setState({ messages: this.state.messages.concat(data.message)});
     console.log("Current state is", this.state.messages);
     }
@@ -68,7 +77,8 @@ addMessage = (event) => {
       const msg = {
         type: 'postMessage',
         username: this.state.currentUser.name,
-        content: event.target.value
+        content: event.target.value,
+        userColor: this.state.userColor 
       };
       this.sendMessageToServer({message: msg});
       console.log("msg is: ", msg);
@@ -84,7 +94,9 @@ addMessage = (event) => {
           <a href="/" className="navbar-brand">Chatty</a>
           <span className="navbar-usersCount">{this.state.usersCount} users online</span>
         </nav>
-        <MessageList  messages={this.state.messages} />
+        <MessageList  messages={this.state.messages} 
+        userColor={this.state.userColor} 
+        /> 
         <ChatBar  currentUser={this.state.currentUser}
           addMessage={this.addMessage} 
           addName={this.addName} 
