@@ -1,8 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
+$bg-color: linear-gradient(335deg, rebeccapurple, darkmagenta);
 
 body {
-  background: white;
+  background: whitesmoke;
   color: black;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
@@ -10,7 +11,7 @@ body {
 }
 
 .chatbar {
-  background: tomato;
+  background: $bg-color;
   border-top: 1px solid black;
   bottom: 0;
   display: flex;
@@ -70,7 +71,7 @@ body {
 }
 
 .navbar {
-  background: tomato;
+  background: $bg-color;
   border-bottom: 1px solid black;
   height: 60px;
   left: 0;

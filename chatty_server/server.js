@@ -1,8 +1,9 @@
 // server.js
-
 const express = require('express');
 const SocketServer = require('ws').Server;
-const uuidV1 = require('uuid/v1');// To generate a UUID v1 time-based
+
+// To generate a UUID v1 time-based
+const uuidV1 = require('uuid/v1');
 
 // Set the port to 3001
 const PORT = 3001;
@@ -16,6 +17,7 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
+// Function for random username color
 function colorRandomizer() {
   var letters = '0123456789ABCDEF';
   var color = '#';
@@ -30,7 +32,6 @@ function colorRandomizer() {
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
-  console.log(colorRandomizer());
   ws.send(JSON.stringify({color: colorRandomizer(), type: "color"}));
   
   // update the connected number of users (usersCount)
@@ -39,34 +40,29 @@ wss.on('connection', (ws) => {
     client.send(wss.clients.size);
   });
 
+  //BROADCAST to everyone
   wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
       client.send(JSON.stringify(data));
-      console.log('Message sent to client from server is: ', data);
     });
   };
 
   ws.on('message', (incomingData) => {
-    //console.log('incoming message is:', incomingMessage);
     const parsedMessage = JSON.parse(incomingData);
-    //console.log('parsedMessage is', parsedMessage);
     parsedMessage.message.id = uuidV1();
-    //console.log('parsedMessage is', parsedMessage.message);
     switch (parsedMessage.message.type) {
       case 'postMessage': parsedMessage.message.type = 'incomingMessage';
         break;
       case 'postNotification': parsedMessage.message.type = 'incomingNotification';
         break;
     }
-    
-    console.log(`User ${parsedMessage.message.username} said ${parsedMessage.message.content}`);
-    //let stringifiedMessage = JSON.stringify(parsedMessage);
     wss.broadcast(parsedMessage);
   });
 
    // Set up a callback for when a client closes the socket. This usually means they closed their browser.
    ws.on('close', () => {
     console.log('Client disconnected');
+    
   // update the connected number of users (usersCount)
   // send wss.clients.size to get the number of users connected
     wss.clients.forEach(function each(client) {

@@ -6,11 +6,10 @@ class MessageList extends Component {
   constructor (props) {
     super(props);
   }
-
   render() {
     return (
       <main className="messages">
-         { this.props.messages.map((data) => {
+         {this.props.messages.map((data) => {
           if (data.type === 'incomingMessage') {
             return (<Message
               userID={ data.id }

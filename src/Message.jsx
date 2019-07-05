@@ -7,9 +7,6 @@ class Message extends Component {
         <span className="message-username" style={{color: this.props.color}}>{this.props.currentUsername}</span>
         <span className="message-content">{this.props.currentMessage}</span>
       </div>
-     // <div className="message system">
-       // Anonymous1 changed their name to nomnom.
-     // </div>
     );
   }
 }
