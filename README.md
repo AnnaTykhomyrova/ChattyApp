@@ -4,8 +4,8 @@ Chatty App
 Chatty App is a client-side single-page application that allows multiple users to chat with each other. The client-side app is built with ReactJS, and communicates with a server via WebSockets for multi-user real-time updates.
 
 # Final Product
-!["Screenshot of two users connected to app."]()
-!["Screenshot of each user can change name and can have random color of username."]()
+!["Screenshot of two users connected to app."](https://github.com/AnnaTykhomyrova/ChattyApp/blob/master/docs/Screenshot%20from%202019-07-05%2015-49-42.png)
+!["Screenshot of each user can change name and can have random color of username."](https://github.com/AnnaTykhomyrova/ChattyApp/blob/master/docs/Screenshot%20from%202019-07-05%2015-54-06.png)
 
 ### Getting Started
 
