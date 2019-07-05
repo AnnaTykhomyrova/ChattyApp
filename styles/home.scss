@@ -3,7 +3,6 @@
 $bg-color: linear-gradient(335deg, rebeccapurple, darkmagenta);
 
 body {
-  background: whitesmoke;
   color: black;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
@@ -97,4 +96,9 @@ body {
   display: block;
   float: right;
   margin-top: 25px;
+}
+
+// Background settings
+canvas {
+	position: fixed;
 }
